@@ -6,17 +6,16 @@ import {
   FileText, 
   ArrowRight, 
   Sparkles, 
-  Layers, 
-  ShieldCheck, 
   Award, 
   Users,
   Database,
-  Cpu
+  Cpu,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section id="about" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <section id="about" className="relative pt-32 pb-20 md:pt-36 md:pb-28 overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-[130px] pointer-events-none"></div>
       <div className="absolute top-1/3 right-10 w-[350px] h-[350px] bg-cyan-500/10 dark:bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none"></div>
@@ -24,8 +23,29 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           
+          {/* Profile Photo with Glowing Ring & Status Indicator */}
+          <div className="relative mb-6 group">
+            <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full p-1 bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-500 shadow-xl shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
+              <img
+                src="/profile.jpg"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://github.com/IngenieurPoete.png";
+                }}
+                alt="Mbopuwouo Fadil Aboubakar Sidik"
+                className="w-full h-full rounded-full object-cover bg-slate-800 border-2 border-white dark:border-[#090d16]"
+              />
+            </div>
+            {/* Status dot indicator */}
+            <div className="absolute bottom-1 right-2 bg-white dark:bg-[#090d16] p-1 rounded-full shadow-md">
+              <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white" title="Disponible pour missions & stages">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </div>
+
           {/* Status Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm font-medium mb-8 backdrop-blur-sm animate-fade-in shadow-sm">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm font-medium mb-6 backdrop-blur-sm shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             <span>Étudiant Ingénieur à l'ISMAGI (BI & Data Science) • En quête de défis à fort impact</span>
           </div>
@@ -54,10 +74,18 @@ export default function Hero() {
             </a>
 
             <a
+              href="#testimonials"
+              className="inline-flex items-center gap-2 px-6 py-3.5 text-base font-semibold text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm transition-all"
+            >
+              <Users className="w-4 h-4 text-emerald-500" />
+              <span>Voir les recommandations</span>
+            </a>
+
+            <a
               href="#contact"
               className="inline-flex items-center gap-2 px-6 py-3.5 text-base font-semibold text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm transition-all"
             >
-              <Mail className="w-4 h-4 text-emerald-500" />
+              <Mail className="w-4 h-4 text-cyan-500" />
               <span>Me contacter</span>
             </a>
 

@@ -18,6 +18,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
     { name: 'Valeur Ajoutée', href: '#value' },
     { name: 'Projets', href: '#projects' },
     { name: 'Certifications', href: '#certifications' },
+    { name: 'Recommandations', href: '#testimonials' },
     { name: 'Compétences', href: '#skills' },
     { name: 'Parcours', href: '#experience' },
     { name: 'Contact', href: '#contact' },
