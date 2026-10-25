@@ -46,58 +46,68 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {testimonials.map((item) => (
-            <div
-              key={item.id}
-              className="p-8 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-emerald-500/40 transition-all flex flex-col justify-between group relative"
-            >
-              <div>
-                {/* Quote Icon & Stars */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                    <Quote className="w-5 h-5" />
-                  </div>
-                  <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quote Text */}
-                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 italic leading-relaxed mb-8">
-                  « {item.text} »
-                </p>
-              </div>
-
-              {/* Author Info */}
-              <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center gap-4">
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500/30"
-                />
+        {/* Testimonials Grid or Placeholder */}
+        {testimonials.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {testimonials.map((item) => (
+              <div
+                key={item.id}
+                className="p-8 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-emerald-500/40 transition-all flex flex-col justify-between group relative"
+              >
                 <div>
-                  <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white text-sm">
-                    <span>{item.name}</span>
-                    {item.verified && (
-                      <CheckCircle className="w-4 h-4 text-emerald-500" title="Recommandation vérifiée" />
-                    )}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                      <Quote className="w-5 h-5" />
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      ))}
+                    </div>
                   </div>
-                  <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
-                    {item.role}
-                  </div>
-                  <div className="text-xs text-slate-400 dark:text-slate-500">
-                    {item.institution} • {item.relationship}
+
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 italic leading-relaxed mb-8">
+                    « {item.text} »
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center gap-4">
+                  <img
+                    src={item.avatar}
+                    alt={item.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500/30"
+                  />
+                  <div>
+                    <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white text-sm">
+                      <span>{item.name}</span>
+                      {item.verified && (
+                        <CheckCircle className="w-4 h-4 text-emerald-500" title="Recommandation vérifiée" />
+                      )}
+                    </div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                      {item.role}
+                    </div>
+                    <div className="text-xs text-slate-400 dark:text-slate-500">
+                      {item.institution} • {item.relationship}
+                    </div>
                   </div>
                 </div>
               </div>
-
+            ))}
+          </div>
+        ) : (
+          <div className="p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center mb-12 max-w-2xl mx-auto shadow-sm">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 mx-auto flex items-center justify-center mb-3">
+              <Sparkles className="w-6 h-6" />
             </div>
-          ))}
-        </div>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+              Espace Recommandations Ouvert
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Les appréciations officielles de mes professeurs, tuteurs de stage et collaborateurs seront publiées ici au fur et à mesure. Vous avez collaboré avec moi ? Partagez votre retour ci-dessous !
+            </p>
+          </div>
+        )}
 
         {/* Action Banner for Professors / Mentors / Recruiters */}
         <div className="p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 border border-emerald-500/30 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
