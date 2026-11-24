@@ -7,23 +7,51 @@ export default function Testimonials() {
   const [showForm, setShowForm] = useState(false);
   const [newRecommendation, setNewRecommendation] = useState({
     name: '',
+    email: '',
     role: '',
     institution: '',
     relationship: 'Professeur / Enseignant',
     text: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const mailto = `mailto:bayerof11@gmail.com?subject=${encodeURIComponent(`Nouvelle recommandation de ${newRecommendation.name} (${newRecommendation.institution})`)}&body=${encodeURIComponent(`Nom: ${newRecommendation.name}\nRôle: ${newRecommendation.role}\nÉtablissement/Entreprise: ${newRecommendation.institution}\nRelation: ${newRecommendation.relationship}\n\nRecommandation:\n${newRecommendation.text}`)}`;
-    window.location.href = mailto;
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setShowForm(false);
-      setNewRecommendation({ name: '', role: '', institution: '', relationship: 'Professeur / Enseignant', text: '' });
-    }, 4000);
+    setSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await fetch('/api/recommendation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newRecommendation),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || 'Impossible d’envoyer la recommandation.');
+      }
+
+      setSubmitted(true);
+      setNewRecommendation({
+        name: '',
+        email: '',
+        role: '',
+        institution: '',
+        relationship: 'Professeur / Enseignant',
+        text: '',
+      });
+      setTimeout(() => {
+        setSubmitted(false);
+        setShowForm(false);
+      }, 4000);
+    } catch (error) {
+      setSubmitError(error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -173,6 +201,22 @@ export default function Testimonials() {
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Votre Adresse Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={newRecommendation.email}
+                    onChange={(e) => setNewRecommendation({...newRecommendation, email: e.target.value})}
+                    placeholder="prenom.nom@ecole.fr"
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Votre Titre ou Rôle *
                   </label>
                   <input
@@ -184,9 +228,7 @@ export default function Testimonials() {
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none"
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Établissement ou Entreprise *
@@ -200,22 +242,23 @@ export default function Testimonials() {
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none"
                   />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                    Contexte de la collaboration *
-                  </label>
-                  <select
-                    value={newRecommendation.relationship}
-                    onChange={(e) => setNewRecommendation({...newRecommendation, relationship: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none"
-                  >
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Contexte de la collaboration *
+                </label>
+                <select
+                  required
+                  value={newRecommendation.relationship}
+                  onChange={(e) => setNewRecommendation({...newRecommendation, relationship: e.target.value})}
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none"
+                >
                     <option value="Professeur / Superviseur">Professeur / Superviseur</option>
                     <option value="Tuteur de Stage / Entreprise">Tuteur de Stage / Entreprise</option>
                     <option value="Collaborateur / Collègue">Collaborateur / Collègue de projet</option>
                     <option value="Autre">Autre</option>
-                  </select>
-                </div>
+                </select>
               </div>
 
               <div>
@@ -234,15 +277,21 @@ export default function Testimonials() {
 
               <button
                 type="submit"
-                className="w-full py-3 px-6 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-all flex items-center justify-center gap-2"
+                disabled={submitting}
+                className="w-full py-3 px-6 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" />
-                <span>Envoyer mon appréciation à Fadil</span>
+                <span>{submitting ? 'Envoi en cours...' : 'Envoyer mon appréciation à Fadil'}</span>
               </button>
 
               {submitted && (
                 <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs text-center font-medium">
-                  ✓ Merci ! Votre messagerie s'est ouverte pour transmettre votre avis à Fadil.
+                  ✓ Recommandation envoyée. Elle arrivera directement dans ta boîte mail.
+                </div>
+              )}
+              {submitError && (
+                <div role="alert" className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs text-center font-medium">
+                  {submitError}
                 </div>
               )}
             </form>

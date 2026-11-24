@@ -39,3 +39,17 @@ Portfolio web haute performance développé en **React 18**, **Vite**, **Tailwin
 3. Rends-toi sur [Vercel](https://vercel.com/) et connecte-toi avec ton compte GitHub.
 4. Clique sur **"Add New Project"**, sélectionne ton dépôt `portfolio` et clique sur **"Deploy"**.
 5. C'est tout ! En 30 secondes, ton portfolio est en ligne avec un lien mondial ultra-rapide (ex : `fadil-portfolio.vercel.app`) et se mettra à jour automatiquement à chaque nouveau commit.
+
+## Envoi des recommandations par e-mail
+
+Le formulaire de recommandation utilise une fonction API Vercel et Resend.
+
+1. Crée une clé API sur [Resend](https://resend.com).
+2. Dans les paramètres du projet Vercel, ajoute les variables d'environnement suivantes :
+   - `RESEND_API_KEY`
+   - `RECOMMENDATION_TO_EMAIL=bayerof11@gmail.com`
+   - `RECOMMENDATION_FROM_EMAIL=Portfolio <recommandations@ton-domaine.com>`
+3. Pour utiliser une adresse d'expéditeur personnalisée, vérifie d'abord ton domaine dans Resend.
+4. Redéploie ensuite le projet sur Vercel.
+
+Le fichier `.env.example` décrit ces variables. Ne publie jamais la vraie valeur de `RESEND_API_KEY`.
